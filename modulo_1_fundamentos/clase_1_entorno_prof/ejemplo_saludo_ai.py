@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Saludo Personalizado Inteligente
+"""Saludo Personalizado Inteligente.
 Python Junior con IA - Clase 1
 Primer programa Python profesional con validación y buenas prácticas
 """
@@ -61,9 +61,7 @@ def generar_saludo_perso(nombre, edad):
 
 
 def main():
-    """
-    Función principal del programa.
-    """
+    """Función principal del programa."""
     print("=" * 50)
     print("🐍 PROGRAMA: SALUDO PERSONALIZADO INTELIGENTE")
     print("=" * 50)
