@@ -1,8 +1,8 @@
 name: Autograding Tests
 on:
-  - push
-  - workflow_dispatch
-  - repository_dispatch
+  push:
+  workflow_dispatch:
+  repository_dispatch:
 permissions:
   checks: write
   actions: read
@@ -12,28 +12,65 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor != 'github-classroom[bot]'
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      # This is where you place your autograding tests
-      # For more information on this runner, see the documentation at: https://github.com/classroom-resources/autograding-io-grader
-      #
-      # For example, you could run a test suite like this:
-      # - name: Run tests
-      #   uses: classroom-resources/autograding-io-grader@v1
-      #     with:
-      #       test-name: Addition Test
-      #       id: addition-test
-      #       command: "./bin/add.sh"
-      #       input: 1 2
-      #       expected-output: 3
-      #       comparison-method: exact
-      #       timeout: 10
-    - name: Autograding Reporter
-      uses: classroom-resources/autograding-grading-reporter@v1
-      # For more information on this runner, see the documentation at https://github.com/classroom-resources/autograding-grading-reporter
-      # To output the results of the tests, you can use the
-      # autograding-grading-reporter action like this:
-      # env:
-      # ADDITION-TEST_RESULTS: "${{ steps.addition - test.outputs.result }}"
-      #     with:
-      #         runners: addition-test
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Python Syntax Check
+        id: syntax-check
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Python Syntax Check"
+          setup-command: ""
+          command: "python -m py_compile modulo_1_fundamentos/clase_1_entorno_prof/ejemplo_saludo_ai.py"
+          timeout: 10
+          max-score: 20
+
+      - name: Pytest Tests
+        id: pytest-tests
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Pytest Tests"
+          setup-command: ""
+          command: "python -m pytest tests/ -v"
+          timeout: 10
+          max-score: 30
+
+      - name: Code Quality Check
+        id: quality-check
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Code Quality Check"
+          setup-command: ""
+          command: "python -m flake8 . --exclude=.venv"
+          timeout: 10
+          max-score: 25
+
+      - name: Documentation Check
+        id: docs-check
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: "Documentation Check"
+          setup-command: ""
+          command: "python -m pydocstyle . --match='(?!test_).*\\.py'"
+          timeout: 10
+          max-score: 25
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          SYNTAX-CHECK_RESULTS: "${{steps.syntax-check.outputs.result}}"
+          PYTEST-TESTS_RESULTS: "${{steps.pytest-tests.outputs.result}}"
+          QUALITY-CHECK_RESULTS: "${{steps.quality-check.outputs.result}}"
+          DOCS-CHECK_RESULTS: "${{steps.docs-check.outputs.result}}"
+        with:
+          runners: syntax-check,pytest-tests,quality-check,docs-check
