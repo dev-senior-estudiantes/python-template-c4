@@ -56,7 +56,7 @@ def generar_saludo_perso(nombre, edad):
         emoji = "🧙‍♂️"
     saludo = f"""{emoji} ¡Hola, {nombre}! {emoji}
     🎯 A los {edad} años, eres un {categoria}.
-    Tip del día: La curiosidad y la práctica te harán mejor programador cada día."""
+    Tip del día: La curiosidad"""
     return saludo
 
 
