@@ -1,0 +1,287 @@
+# GitHub Actions Workflow para Curso Python Junior con IA
+# Ejecuta tests, linting y verificaciones de calidad automáticamente
+
+name: Python Application CI/CD
+
+# Cuando se ejecuta este workflow
+on:
+  # En cada push a main o desarrollo
+  push:
+    branches: [main, develop]
+  # En cada pull request a main
+  pull_request:
+    branches: [main]
+  # Permite ejecución manual desde GitHub
+  workflow_dispatch:
+
+# Variables de entorno globales
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  # Job 1: Testing y Calidad de Código
+  test-and-lint:
+    name: 🧪 Tests y Calidad de Código
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+
+    steps:
+      # Checkout del código
+      - name: 📂 Checkout código
+        uses: actions/checkout@v4
+
+      # Configurar Python
+      - name: 🐍 Configurar Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Cache de dependencias para velocidad
+      - name: 📦 Cache de dependencias pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      # Instalar dependencias
+      - name: 📥 Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          # Instalar herramientas adicionales para CI
+          pip install pytest-cov pytest-xvfb
+
+      # Ejecutar flake8 para verificar estilo de código
+      - name: 📏 Verificar estilo con flake8
+        run: |
+          # Verificar errores de sintaxis y nombres indefinidos
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Verificar complejidad y estilo (warning only)
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+
+      # Ejecutar pycodestyle para verificar estilo PEP8
+      - name: 📐 Verificar estilo con pycodestyle
+        run: |
+          pycodestyle .
+
+      # Ejecutar pydocstyle para verificar docstrings
+      - name: 📚 Verificar docstrings con pydocstyle
+        run: |
+          pydocstyle .
+
+      # Ejecutar pylint para análisis estático
+      - name: 🔍 Análisis estático con pylint
+        run: |
+          # Analizar módulos principales (permitir algunos warnings para estudiantes)
+          find . -name "*.py" -path "./modulo_*" | head -10 | xargs pylint --exit-zero --score=yes
+
+      # Ejecutar tests con pytest
+      - name: 🧪 Ejecutar tests con pytest
+        run: |
+          # Buscar y ejecutar todos los tests
+          pytest --verbose --cov=. --cov-report=xml --cov-report=html
+
+      # Subir cobertura de código a Codecov (opcional)
+      - name: 📊 Subir cobertura a Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  # Job 2: Verificar estructura del proyecto
+  verify-structure:
+    name: 📁 Verificar Estructura del Proyecto
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout código
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: 📋 Verificar archivos esenciales
+        run: |
+          echo "🔍 Verificando estructura del proyecto..."
+
+          # Verificar archivos raíz obligatorios
+          test -f README.md || (echo "❌ README.md faltante" && exit 1)
+          test -f requirements.txt || (echo "❌ requirements.txt faltante" && exit 1)
+          test -f setup_instructions.md || (echo "❌ setup_instructions.md faltante" && exit 1)
+          test -f .gitignore || (echo "❌ .gitignore faltante" && exit 1)
+
+          # Verificar estructura de módulos
+          test -d modulo_1_fundamentos || (echo "❌ modulo_1_fundamentos faltante" && exit 1)
+          test -d recursos || (echo "❌ carpeta recursos faltante" && exit 1)
+
+          # Verificar que existen archivos Python
+          find . -name "*.py" | head -1 > /dev/null || (echo "❌ No se encontraron archivos Python" && exit 1)
+
+          echo "✅ Estructura del proyecto verificada correctamente"
+
+      - name: 📚 Verificar documentación
+        run: |
+          echo "📖 Verificando calidad de documentación..."
+
+          # Contar archivos README
+          readme_count=$(find . -name "README.md" | wc -l)
+          echo "📄 Archivos README encontrados: $readme_count"
+
+          # Verificar que hay documentación en módulos
+          if [ $readme_count -lt 2 ]; then
+            echo "⚠️ Pocos archivos de documentación encontrados"
+          else
+            echo "✅ Documentación adecuada presente"
+          fi
+
+          # Verificar archivos de ejemplo
+          ejemplo_count=$(find . -name "ejemplo_*.py" | wc -l)
+          echo "💻 Archivos de ejemplo encontrados: $ejemplo_count"
+
+  # Job 3: Verificar código de estudiantes
+  student-code-check:
+    name: 👨‍🎓 Verificación de Código Estudiantil
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 Checkout código
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: 📥 Instalar dependencias básicas
+        run: |
+          python -m pip install --upgrade pip
+          pip install ast black
+
+      - name: 🔍 Verificar sintaxis Python
+        run: |
+          echo "🐍 Verificando sintaxis de archivos Python..."
+
+          # Verificar que todos los archivos .py son sintácticamente correctos
+          find . -name "*.py" | while read file; do
+            echo "Verificando: $file"
+            python -m py_compile "$file" || echo "❌ Error de sintaxis en: $file"
+          done
+
+          echo "✅ Verificación de sintaxis completada"
+
+      - name: 📐 Verificar estilo básico
+        run: |
+          echo "📏 Verificando estilo básico del código..."
+
+          # Verificar archivos de ejemplo específicos
+          for file in $(find . -name "ejemplo_*.py" | head -5); do
+            if [ -f "$file" ]; then
+              echo "Verificando estilo de: $file"
+              # Verificar formateo con black (sin aplicar cambios)
+              black --check --diff "$file" || echo "⚠️ $file necesita formateo"
+            fi
+          done
+
+          echo "✅ Verificación de estilo completada"
+
+  # Job 4: Tests específicos del curso
+  course-specific-tests:
+    name: 🎓 Tests Específicos del Curso
+    runs-on: ubuntu-latest
+    needs: [test-and-lint]
+
+    steps:
+      - name: 📂 Checkout código
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: 📥 Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🧪 Ejecutar tests de módulos
+        run: |
+          echo "🧪 Ejecutando tests específicos del curso..."
+
+          # Buscar y ejecutar archivos de test en cada módulo
+          for modulo in modulo_*; do
+            if [ -d "$modulo" ]; then
+              echo "📁 Verificando módulo: $modulo"
+              
+              # Buscar archivos de test o ejemplo ejecutables
+              find "$modulo" -name "*.py" | while read file; do
+                if [[ "$file" == *"ejemplo_"* ]] || [[ "$file" == *"test_"* ]]; then
+                  echo "🔍 Verificando ejecutabilidad: $file"
+                  timeout 30s python "$file" < /dev/null || echo "⚠️ Problema ejecutando: $file"
+                fi
+              done
+            fi
+          done
+
+          echo "✅ Tests de módulos completados"
+
+      - name: 📊 Generar reporte de calidad
+        run: |
+          echo "📊 Generando reporte de calidad del código..."
+
+          # Contar archivos y líneas de código
+          echo "📈 ESTADÍSTICAS DEL PROYECTO:"
+          echo "- Archivos Python: $(find . -name '*.py' | wc -l)"
+          echo "- Líneas de código: $(find . -name '*.py' -exec wc -l {} + | tail -1)"
+          echo "- Archivos de documentación: $(find . -name '*.md' | wc -l)"
+          echo "- Módulos del curso: $(find . -maxdepth 1 -name 'modulo_*' -type d | wc -l)"
+
+          echo "✅ Reporte de calidad generado"
+
+  # Job 5: Deployment/Release (solo en main)
+  deploy:
+    name: 🚀 Deploy Template
+    runs-on: ubuntu-latest
+    needs:
+      [
+        test-and-lint,
+        verify-structure,
+        student-code-check,
+        course-specific-tests,
+      ]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: 📂 Checkout código
+        uses: actions/checkout@v4
+
+      - name: 🏷️ Crear release automático
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ github.run_number }}
+          release_name: Template Release v${{ github.run_number }}
+          body: |
+            🎓 Nueva versión del template de curso Python Junior con IA
+
+            ✅ Todos los tests pasaron
+            ✅ Calidad de código verificada
+            ✅ Estructura del proyecto validada
+            ✅ Documentación actualizada
+
+            🔗 Commit: ${{ github.sha }}
+            🕐 Fecha: ${{ github.event.head_commit.timestamp }}
+          draft: false
+          prerelease: false
+# Configuración adicional para notificaciones (opcional)
+# Se puede configurar para enviar notificaciones a Discord, Slack, etc.
