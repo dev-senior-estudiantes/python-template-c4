@@ -17,9 +17,7 @@ from modulo_1_fundamentos.clase_1_entorno_prof.ejemplo_saludo_ai import (
     ]
 )
 def test_saludo_parametrizado(nombre, edad, categoria, emoji):
-    """
-    Test parametrizado para todas las categorías de saludo.
-    """
+    """Test parametrizado para todas las categorías."""
     saludo = generar_saludo_perso(nombre, edad)
     assert categoria in saludo
     assert emoji in saludo

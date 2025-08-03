@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
-"""Curso: Python Junior con IA
-Propósito: Verificar que todas las herramientas estén instaladas y
-configuradas correctamente,
-Curso: Python Junior con IA
-Propósito: Verificar que todas las herramientas estén instaladas y
-configuradas correctamente,
-Script diseñado para estudiantes que comienzan el curso,
-instalación y validación.
+"""Curso: Python Junior con IA.
+Propósito: Verificar que todas las herramientas
 """
 
 import sys
@@ -31,7 +25,7 @@ def print_section(title):
 
 
 def check_python_version():
-    """Verifica que Python esté instalado y que la versión sea al menos 3.9."""
+    """Verifica que Python esté instalado"""
     print_section("VERIFICANDO PYTHON")
     version = sys.version_info
     version_str = f"Python {version.major}.{version.minor}.{version.micro}"
@@ -62,7 +56,7 @@ def check_pip():
 
 
 def check_required_packages():
-    """Verifica que los paquetes requeridos estén instalados en el entorno."""
+    """Verifica que los paquetes requerid"""
     print_section("VERIFICANDO PAQUETES PYTHON")
     required_packages = [
         ('pytest', 'Framework de testing'),
@@ -88,7 +82,7 @@ def check_required_packages():
 
 
 def check_git():
-    """Verifica que Git esté correctamente configurado con nombre correo."""
+    """Verifica que Git esté correctamente"""
     print_section("VERIFICANDO GIT")
     try:
         result = subprocess.run(
@@ -132,7 +126,7 @@ def check_git():
 
 
 def check_vscode():
-    """Verifica si VS Code está instalado y accesible desde la terminal."""
+    """Verifica si VS Code está instalado."""
     print_section("VERIFICANDO VISUAL STUDIO CODE")
     try:
         result = subprocess.run(
@@ -156,7 +150,7 @@ def check_vscode():
 
 
 def check_project_structure():
-    """Verifica la presencia de archivos y carpetas clave del proyecto."""
+    """Verifica la presencia de archivos y carpet"""
     print_section("VERIFICANDO ESTRUCTURA DEL PROYECTO")
     current_dir = Path.cwd()
     required_files = [
@@ -188,7 +182,7 @@ def check_project_structure():
 
 
 def check_virtual_environment():
-    """Detecta si se está ejecutando dentro de un entorno virtual (venv)."""
+    """Detecta si se está ejecutando dentro de un entorno"""
     print_section("VERIFICANDO ENTORNO VIRTUAL")
     if hasattr(sys, 'real_prefix') or (
         hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix
@@ -205,7 +199,7 @@ def check_virtual_environment():
 
 
 def run_basic_tests():
-    """tests de importaciones,de archivos, ejecución de comandos."""
+    """ de importaciones, escritu"""
     print_section("EJECUTANDO TESTS BÁSICOS")
     try:
         print("🧪 Probando importaciones básicas...")
@@ -264,7 +258,7 @@ def generate_report(checks_results):
 
 
 def main():
-    """Función que ejecuta las verificaciones y muestra el resultado final."""
+    """Función que ejecuta las verificaciones"""
     print_header()
     checks = {
         "Python 3.9+": check_python_version(),
