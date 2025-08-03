@@ -25,7 +25,7 @@ def print_section(title):
 
 
 def check_python_version():
-    """Verifica que Python esté instalado"""
+    """Verifica que Python esté instalado."""
     print_section("VERIFICANDO PYTHON")
     version = sys.version_info
     version_str = f"Python {version.major}.{version.minor}.{version.micro}"
@@ -56,7 +56,7 @@ def check_pip():
 
 
 def check_required_packages():
-    """Verifica que los paquetes requerid"""
+    """Verifica que los paquetes requerid."""
     print_section("VERIFICANDO PAQUETES PYTHON")
     required_packages = [
         ('pytest', 'Framework de testing'),
@@ -82,7 +82,7 @@ def check_required_packages():
 
 
 def check_git():
-    """Verifica que Git esté correctamente"""
+    """Verifica que Git esté correctamente."""
     print_section("VERIFICANDO GIT")
     try:
         result = subprocess.run(
@@ -150,7 +150,7 @@ def check_vscode():
 
 
 def check_project_structure():
-    """Verifica la presencia de archivos y carpet"""
+    """Verifica la presencia de archivos y carpet."""
     print_section("VERIFICANDO ESTRUCTURA DEL PROYECTO")
     current_dir = Path.cwd()
     required_files = [
@@ -182,7 +182,7 @@ def check_project_structure():
 
 
 def check_virtual_environment():
-    """Detecta si se está ejecutando dentro de un entorno"""
+    """Detecta si se está ejecutando dentro de un entorno."""
     print_section("VERIFICANDO ENTORNO VIRTUAL")
     if hasattr(sys, 'real_prefix') or (
         hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix
@@ -199,7 +199,7 @@ def check_virtual_environment():
 
 
 def run_basic_tests():
-    """ de importaciones, escritu"""
+    """ de importaciones, escritu."""
     print_section("EJECUTANDO TESTS BÁSICOS")
     try:
         print("🧪 Probando importaciones básicas...")
@@ -258,7 +258,7 @@ def generate_report(checks_results):
 
 
 def main():
-    """Función que ejecuta las verificaciones"""
+    """Función que ejecuta las verificaciones."""
     print_header()
     checks = {
         "Python 3.9+": check_python_version(),

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Saludo Personalizado Inteligente.
+
 Python Junior con IA - Clase 1
 Primer programa Python profesional
 """
