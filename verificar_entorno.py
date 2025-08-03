@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Curso: Python Junior con IA.
+
 Propósito: Verificar que todas las herramientas
 """
 
@@ -199,7 +200,7 @@ def check_virtual_environment():
 
 
 def run_basic_tests():
-    """ de importaciones, escritu."""
+    """De importaciones, escritura."""
     print_section("EJECUTANDO TESTS BÁSICOS")
     try:
         print("🧪 Probando importaciones básicas...")
