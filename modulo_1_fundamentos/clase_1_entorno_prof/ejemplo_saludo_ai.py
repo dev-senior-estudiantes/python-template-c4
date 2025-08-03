@@ -1,19 +1,14 @@
 #!/usr/bin/env python3
-"""
-Programa: Saludo Personalizado Inteligente
-Curso: Python Junior con IA - Clase 1
-Descripción: Primer programa Python profesional con validación y buenas prácticas
+"""Saludo Personalizado Inteligente
+Python Junior con IA - Clase 1
+Primer programa Python profesional con validación y buenas prácticas
 """
 
+
 def solicitar_nombre():
-    """
-    Solicita el nombre del usuario con validación básica.
-    
-    Returns:
-        str: Nombre válido del usuario
-    """
+    """Solicita el nombre del usuario con validación básica."""
     while True:
-        nombre = input("👋 ¿Cuál es tu nombre? ").strip()
+        nombre = input("¿Cuál es tu nombre? ").strip()
         # Validación básica
         if not nombre:
             print("❌ El nombre no puede estar vacío. Inténtalo de nuevo.")
@@ -26,13 +21,9 @@ def solicitar_nombre():
             continue
         return nombre.title()  # Capitalizar nombre
 
+
 def solicitar_edad():
-    """
-    Solicita la edad del usuario con validación.
-    
-    Returns:
-        int: Edad válida del usuario
-    """
+    """Solicita la edad del usuario con validación."""
     while True:
         try:
             edad_input = input("🎂 ¿Cuántos años tienes? ")
@@ -47,17 +38,9 @@ def solicitar_edad():
         except ValueError:
             print("❌ Por favor, ingresa un número válido.")
 
-def generar_saludo_personalizado(nombre, edad):
-    """
-    Genera un saludo personalizado basado en nombre y edad.
-    
-    Args:
-        nombre (str): Nombre del usuario
-        edad (int): Edad del usuario
-        
-    Returns:
-        str: Mensaje de saludo personalizado
-    """
+
+def generar_saludo_perso(nombre, edad):
+    """Genera un saludo personalizado basado en nombre y edad."""
     # Determinar categoría por edad
     if edad < 13:
         categoria = "joven programador"
@@ -71,19 +54,11 @@ def generar_saludo_personalizado(nombre, edad):
     else:
         categoria = "programador experimentado"
         emoji = "🧙‍♂️"
-    saludo = f"""
-{emoji} ¡Hola, {nombre}! {emoji}
-
-🎯 A los {edad} años, eres un {categoria}.
-🐍 ¡Bienvenido al mundo de Python!
-🤖 Tu viaje con IA comienza ahora.
-
-💡 Tip del día: La programación es resolución de problemas, 
-   no memorización de sintaxis.
-   
-🚀 ¡Vamos a crear cosas increíbles juntos!
-"""
+    saludo = f"""{emoji} ¡Hola, {nombre}! {emoji}
+    🎯 A los {edad} años, eres un {categoria}.
+    Tip del día: La curiosidad y la práctica te harán mejor programador cada día."""
     return saludo
+
 
 def main():
     """
@@ -97,7 +72,7 @@ def main():
         nombre = solicitar_nombre()
         edad = solicitar_edad()
         # Generar y mostrar saludo
-        saludo = generar_saludo_personalizado(nombre, edad)
+        saludo = generar_saludo_perso(nombre, edad)
         print(saludo)
         # Mensaje de despedida
         print("🎉 ¡Programa ejecutado exitosamente!")
@@ -108,6 +83,7 @@ def main():
     except RuntimeError as error:
         print(f"\n❌ Error inesperado: {error}")
         print("🤖 Usa este error para preguntar a la IA cómo solucionarlo.")
+
 
 # Ejecutar programa solo si se ejecuta directamente
 if __name__ == "__main__":

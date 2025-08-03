@@ -18,12 +18,12 @@ clean:
 # Ejecuta todos los tests
 
 test:
-	pytest -v
+	 python -m pytest -v
 
 # Analiza el código con pylint
 lint:
-	pylint modulo_1_fundamentos/clase_1_entorno_profesional/ejemplo_saludo_inteligente.py
+	pylint modulo_1_fundamentos/clase_1_entorno_prof/ejemplo_saludo_ai.py
 
 # Revisa el estilo con flake8
 style:
-	flake8 .
+	python -m flake8 . --exclude=.venv

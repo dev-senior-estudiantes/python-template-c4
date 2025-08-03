@@ -84,7 +84,7 @@ jobs:
       - name: 🧪 Ejecutar tests con pytest
         run: |
           # Buscar y ejecutar todos los tests
-          pytest --verbose --cov=. --cov-report=xml --cov-report=html
+          python -m pytest -v --cov=. --cov-report=xml --cov-report=html
 
       # Subir cobertura de código a Codecov (opcional)
       - name: 📊 Subir cobertura a Codecov

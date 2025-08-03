@@ -30,11 +30,6 @@ Puedes automatizar la ejecución de herramientas de calidad y tests usando el ar
 
 **Comandos principales:**
 
-- `make test` → Ejecuta los tests con pytest
-- `make lint` → Analiza el código con pylint
-- `make style` → Revisa el estilo con flake8
-- `make clean` → Elimina archivos temporales y caché
-
 Solo necesitas el archivo `Makefile` en la raíz del proyecto. No es necesario crear archivos extra para usar estas herramientas, pero sí debes tener tus scripts y tests organizados en carpetas como `modulo_1_fundamentos/` y `tests/`.
 
 **Ejemplo de uso:**
@@ -46,9 +41,26 @@ make style
 make clean
 ```
 
----
+## 🖥️ Instalación de Chocolatey y Make en Windows
 
-# 🐍 Curso Junior de Python con Inteligencia Artificial
+Para usar el Makefile en Windows, necesitas instalar Chocolatey y Make. Sigue estos pasos:
+
+1. Abre PowerShell como administrador y ejecuta:
+   ```powershell
+   Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+   ```
+2. Instala Make:
+   ```cmd
+   choco install make
+   ```
+3. Verifica que ambos comandos funcionen:
+   ```cmd
+   choco --version
+   make --version
+   ```
+4. Si no funcionan, agrega manualmente la ruta `C:\ProgramData\chocolatey\bin` al PATH del sistema.
+
+Consulta la guía completa en `setup_install_chocolatey_make.md` para más detalles y solución de problemas.
 
 > **Programa Educativo Profesional** - Formación moderna de programadores Python con asistencia de IA
 

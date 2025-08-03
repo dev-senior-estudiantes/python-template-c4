@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""
-Script de verificación del entorno de desarrollo
-
+"""Curso: Python Junior con IA
+Propósito: Verificar que todas las herramientas estén instaladas y
+configuradas correctamente,
 Curso: Python Junior con IA
-Propósito: Verificar que todas las herramientas estén instaladas y configuradas correctamente,
-incluyendo Python, pip, paquetes esenciales, Git, VS Code y estructura del proyecto.
-
-script diseñado para estudiantes que comienzan el curso, instalación y validación.
+Propósito: Verificar que todas las herramientas estén instaladas y
+configuradas correctamente,
+Script diseñado para estudiantes que comienzan el curso,
+instalación y validación.
 """
 
 import sys
@@ -37,7 +37,7 @@ def check_python_version():
     version_str = f"Python {version.major}.{version.minor}.{version.micro}"
     print(f"🐍 Versión instalada: {version_str}")
     if version.major == 3 and version.minor >= 9:
-        print("✅ Versión de Python es correcta (3.9+)")
+        print("✅ Versión de Python es correcta (3.9+")
         return True
     print("❌ Necesitas Python 3.9 o superior")
     print("💡 Descarga desde: https://python.org/downloads")
@@ -88,7 +88,7 @@ def check_required_packages():
 
 
 def check_git():
-    """Verifica que Git esté instalado y correctamente configurado con nombre y correo."""
+    """Verifica que Git esté correctamente configurado con nombre correo."""
     print_section("VERIFICANDO GIT")
     try:
         result = subprocess.run(
@@ -132,7 +132,7 @@ def check_git():
 
 
 def check_vscode():
-    """Verifica si Visual Studio Code está instalado y accesible desde la terminal."""
+    """Verifica si VS Code está instalado y accesible desde la terminal."""
     print_section("VERIFICANDO VISUAL STUDIO CODE")
     try:
         result = subprocess.run(
@@ -205,7 +205,7 @@ def check_virtual_environment():
 
 
 def run_basic_tests():
-    """Ejecuta pruebas básicas: importaciones, escritura de archivos, ejecución de comandos."""
+    """tests de importaciones,de archivos, ejecución de comandos."""
     print_section("EJECUTANDO TESTS BÁSICOS")
     try:
         print("🧪 Probando importaciones básicas...")
@@ -240,7 +240,7 @@ def run_basic_tests():
 
 
 def generate_report(checks_results):
-    """Genera un resumen final con todos los resultados de las verificaciones."""
+    """Genera un resumen final de resultados de las verificaciones."""
     print_section("REPORTE FINAL")
     total = len(checks_results)
     passed = sum(checks_results.values())
@@ -252,7 +252,7 @@ def generate_report(checks_results):
     if passed == total:
         print("🎉 ¡EXCELENTE! Tu entorno está completamente configurado.")
         print("🚀 Estás listo para comenzar el curso de Python con IA.")
-        print("\n🎯 Próximo paso: Dirígete a modulo_1_fundamentos/clase_1_entorno_profesional/")
+        print("\n🎯 Ir a modulo_1_fundamentos/clase_1_entorno_profesional/")
     elif passed >= total * 0.8:
         print("⚠️ Tu entorno está casi listo. Hay algunos problemas menores.")
         print("🔧 Revisa los elementos marcados con ❌ y corrígelos.")
@@ -264,7 +264,7 @@ def generate_report(checks_results):
 
 
 def main():
-    """Función principal que ejecuta las verificaciones en orden y muestra el resultado final."""
+    """Función que ejecuta las verificaciones y muestra el resultado final."""
     print_header()
     checks = {
         "Python 3.9+": check_python_version(),
